@@ -1,4 +1,5 @@
 # Passport JWT Authentication
+Refer to this [postman collection](https://www.getpostman.com/collections/1d204568e75cd9aaf385)
 
 Node.js authentication tutorial using Passport.js
 
