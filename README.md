@@ -1,4 +1,5 @@
-# Passport-Tutorial
+# Passport JWT Authentication
+Refer to this [postman collection](https://www.getpostman.com/collections/1d204568e75cd9aaf385)
 
 Node.js authentication tutorial using Passport.js
 
@@ -10,7 +11,14 @@ Make sure you have these installed on your machine
 * [MongoDB](https://www.mongodb.com)
 * **npm** This comes with Node.js, but make sure you check if you have it anyway
 
-### Installing packages
+### Installing packages & pre-requisites
+
+Create MongoDb Database named 'voxsnap' and set up the connection string in app.js with appropriate username and password
+
+```
+database name = voxsnap
+```
+
 
 Install packages
 
