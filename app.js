@@ -5,11 +5,18 @@ const session = require('express-session');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const errorHandler = require('errorhandler');
+const result = require('dotenv').config()
 
+if (result.error) {
+  throw result.error
+}
+
+// console.log(result.parsed)
 //Configure mongoose's promise to global promise
 mongoose.promise = global.Promise;
 
 //Configure isProduction variable
+// console.log(process.env)
 const isProduction = process.env.NODE_ENV === 'production';
 
 //Initiate our app
@@ -21,14 +28,18 @@ app.use(require('morgan')('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({ secret: 'voxsnap', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
+// app.use(session({ secret: 'voxsnap', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
+app.use(session({ secret:process.env.JSON_WEBTOKEN_SECRET , cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
 
 if(!isProduction) {
   app.use(errorHandler());
 }
 
 //Configure Mongoose
-mongoose.connect('mongodb://admin:admin123@localhost/voxsnap?authSource=admin');
+
+// mongoose.connect('mongodb://admin:admin123@localhost/voxsnap?authSource=admin');
+console.log(process.env.JSON_WEBTOKEN_SECRET)
+mongoose.connect(process.env.DB_CLIENT);
 mongoose.set('debug', true);
 
 //Models & routes
@@ -37,7 +48,9 @@ require('./config/passport');
 app.use(require('./routes'));
 
 //Error handlers & middlewares
+
 if(!isProduction) {
+
   app.use((err, req, res) => {
     res.status(err.status || 500);
 

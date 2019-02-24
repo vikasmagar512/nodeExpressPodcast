@@ -6,16 +6,17 @@ const fs = require('fs');
 const readline = require('readline-sync');
 // Requires xmlbuilder to build the SSML body
 const xmlbuilder = require('xmlbuilder');
+const result = require('dotenv').config()
+
+if (result.error) {
+    throw result.error
+}
+
+console.log(result.parsed)
 
 //https://azure.microsoft.com/en-us/try/cognitive-services/my-apis/?apiSlug=speech-services&country=India&allowContact=true&fromLogin=True
 // End point: https://westus.api.cognitive.microsoft.com/sts/v1.0
-const key1="c6996c07fbf54d82bb2756d3424c2b2b"
-const key2= "90b50fcc539c4976a30744fcaaf32a4b"
-
-// https://portal.azure.com/#@Inteliment.com/resource/subscriptions/222dd4a2-6898-4a55-ae41-3a74023f06e6/resourceGroups/voxsnap/providers/Microsoft.CognitiveServices/accounts/voxsnap/keys
-// const key1="4ff1c8884ec4450ab55f8284b886b689"
-// const key2="c6d5b98a05174d858ad78d194e570687"
-const key = key2
+const key = process.env.AZURE_KEY1
 
 function textToSpeech(subscriptionKey, saveAudio) {
     let options = {
@@ -44,7 +45,7 @@ function textToSpeech(subscriptionKey, saveAudio) {
 // You can also change the voice and output formats. See:
 // https://docs.microsoft.com/azure/cognitive-services/speech-service/language-support#text-to-speech
 function saveAudio(accessToken) {
-    const text = "The fault, dear Brutus, is not in our stars, But in ourselves, that we are underlings.";
+    const text = "The fault, dear Brutus, Vikas is not in our stars, But in ourselves, Vikas that we are underlings. Vikas";
 
     // Create the SSML request.
     let xml_body = xmlbuilder.create('speak')
@@ -65,7 +66,8 @@ function saveAudio(accessToken) {
         headers: {
             'Authorization': 'Bearer ' + accessToken,
             'cache-control': 'no-cache',
-            'User-Agent': 'voxsnap',
+            // 'User-Agent': 'voxsnap1',
+            'User-Agent': process.env.AZURE_USER_AGENT_RESOURCE_NAME,
             'X-Microsoft-OutputFormat': 'riff-24khz-16bit-mono-pcm',
             'Content-Type': 'application/ssml+xml'
         },
@@ -76,14 +78,13 @@ function saveAudio(accessToken) {
     function convertText(error, response, body){
         if (!error && response.statusCode == 200) {
             console.log("Converting text-to-speech. Please hold...\n")
-        }
-        else {
+        } else {
             throw new Error(error);
         }
         console.log("Your file is ready.\n")
     }
     // Pipe the response to file.
-    request(options, convertText).pipe(fs.createWriteStream('sample.wav'));
+    request(options, convertText).pipe(fs.createWriteStream('sample2.wav'));
 }
 // Start the sample app.
 textToSpeech(key, saveAudio);

@@ -13,6 +13,23 @@ Make sure you have these installed on your machine
 
 ### Installing packages & pre-requisites
 
+Obtain keys from azure cognitive services from following url
+https://azure.microsoft.com/en-us/try/cognitive-services/my-apis/?apiSlug=speech-services&country=India&allowContact=true&fromLogin=True
+
+End point: https://westus.api.cognitive.microsoft.com/sts/v1.0
+
+Create a .env file on the root directory to declare the environment variables for the following:
+touch .env
+```
+DB_CLIENT=<your MongoDB client> (observe the below connection string with user and password)
+DB_CLIENT=mongodb://admin:admin123@localhost/voxsnap?authSource=admin
+JSON_WEBTOKEN_SECRET=<your custom JWT secret key>
+NODE_ENV=<development | production>
+AZURE_USER_AGENT_RESOURCE_NAME=<azure resource name>
+AZURE_KEY1=<azure api key1>
+AZURE_KEY2= <azure api key2>
+```
+
 Create MongoDb Database named 'voxsnap' and set up the connection string in app.js with appropriate username and password
 
 ```
